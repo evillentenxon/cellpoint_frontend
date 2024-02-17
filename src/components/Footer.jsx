@@ -48,9 +48,9 @@ function Footer() {
                 <ul>
                     <li><h4>Follow cellpoint</h4></li>
                     <li><div className="social">
-                        <a href="https://www.facebook.com/profile.php?id=100084922516651&mibextid=ZbWKwL" target="_blank" rel="noreferrer"><FaSquareFacebook className='icons' /></a>
+                        <a href="https://www.facebook.com/profile.php?id=100084922516651&mibextid=ZbWKwL" target="_blank" rel="noreferrer"><FaSquareFacebook className='icons'/></a>
                         <a href="https://www.tiktok.com/@cellpoint48?lang=en&is_from_webapp=1&sender_device=mobile&sender_web_id=7225995434048865794" target="_blank" rel="noreferrer"><SiTiktok className='icons' /></a>
-                        <a href="https://www.instagram.com/cellpoint119?igsh=NTc4MTIwNjQ2YQ==" target="_blank" rel="noreferrer"><FaSquareInstagram className='icons' /></a>
+                        <a href="https://www.instagram.com/cellpoint119?igsh=NTc4MTIwNjQ2YQ==" target="_blank" rel="noreferrer"><FaSquareInstagram className='icons'/></a>
                     </div>
                     </li>
                     <li>
@@ -183,6 +183,7 @@ span,
 hr {
     margin: 0 100px;
 }
+
 //-------------------------------------------------------media query start
 @media only screen and (max-width: 500px){
     width: 100vw;
