@@ -4,7 +4,6 @@ import Footer from './components/Footer'
 // import { useData } from './DataContext';
 
 function Contact() {
-  // const { inputData } = useData();
   const [formData, setFormData] = useState({
     name: '',
     gender: '',
@@ -13,30 +12,32 @@ function Contact() {
     image: '',
   });
 
-  // useEffect(() => {
-  //   if (inputData !== null) {
-  //     document.getElementById('email').value = inputData;
-  //   }
-  // });
-
   const handleChange = (event) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
+    const { name, value } = event.target;
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: name === 'image' ? value : value,
+    }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
+    const formDataToSend = new FormData();
+    formDataToSend.append('name', formData.name);
+    formDataToSend.append('gender', formData.gender);
+    formDataToSend.append('email', formData.email);
+    formDataToSend.append('message', formData.message);
+    formDataToSend.append('image', formData.image);
+
+    console.log(formDataToSend);
+
     try {
       const response = await fetch('http://localhost:4000/postData/collectData', {
         method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: formDataToSend,
       });
+
       if (response.ok) {
         alert('Message sent successfully');
       } else {
@@ -45,78 +46,82 @@ function Contact() {
     } catch (error) {
       alert('Error submitting form data:', error);
     }
-  }
-
-    return (
-      <Div>
-        <div className="form">
-          <form onSubmit={handleSubmit}>
-            <h2>Contact Us</h2>
-            <input type="text"
-              className='input'
-              name="name"
-              placeholder="Fullname"
-              value={formData.name}
-              onChange={handleChange}
-            /><br />
-
-            <input type='radio' name='gender'
-              value='male'
-              checked={formData.gender === 'male'}
-              onChange={handleChange}
-            /><label>male</label>
-            <input type='radio' name='gender'
-              value='female'
-              checked={formData.gender === 'female'}
-              onChange={handleChange}
-            /><label>female</label><br />
-
-            <input type="email"
-              id="email"
-              className='input'
-              name="email"
-              placeholder='Enter email'
-              value={formData.email}
-              onChange={handleChange}
-            />
-
-            <textarea className='input'
-              name="message"
-              placeholder='Message'
-              value={formData.message}
-              onChange={handleChange}
-            /><br />
-            <input type="file" name='image'
-              value={formData.image}
-              onChange={handleChange}
-            /><br />
-            <button type="submit">send</button>
-          </form>
-        </div>
-        {/* form end */}      
-
-        {/* map start */}
-        <iframe
-          title="myFrame"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3565.653712883943!2d87.69190421017112!3d26.65956767082836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39e58f6bb2ae73a9%3A0x7da5eaee290218cc!2sCellPoint!5e0!3m2!1sen!2snp!4v1705146376981!5m2!1sen!2snp"
-          width="100%"
-          height="450"
-          style={{ border: 0 }}
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade">
-        </iframe>
-
-        {/* iframe ends */}
-
-        <Footer />
-
-      </Div>
-    )
-  }
+  };
 
 
-  const Div = styled.div`
+  return (
+    <Div>
+      <div className="form">
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
+          <h2>Contact Us</h2>
+          <input type="text"
+            className='input'
+            name="name"
+            placeholder="Fullname"
+            value={formData.name}
+            onChange={handleChange}
+          /><br />
+
+          <input type='radio' name='gender'
+            value='male'
+            checked={formData.gender === 'male'}
+            onChange={() => handleChange({ target: { name: 'gender', value: 'male' } })}
+
+          /><label>male</label>
+          <input type='radio' name='gender'
+            value='female'
+            checked={formData.gender === 'female'}
+            onChange={() => handleChange({ target: { name: 'gender', value: 'female' } })}
+          /><label>female</label><br />
+
+          <input type="email"
+            id="email"
+            className='input'
+            name="email"
+            placeholder='Enter email'
+            value={formData.email}
+            onChange={handleChange}
+          />
+
+          <textarea className='input'
+            name="message"
+            placeholder='Message'
+            value={formData.message}
+            onChange={handleChange}
+          /><br />
+          <input type="file"
+            name='image'                        
+            onChange={(event) => handleChange({ target: { name: 'image', value: event.target.files[0] } })}
+          /><br />
+          <button type="submit">send</button>
+        </form>
+
+      </div>
+
+      {/* form end */}
+
+      {/* map start */}
+      <iframe
+        title="myFrame"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3565.653712883943!2d87.69190421017112!3d26.65956767082836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39e58f6bb2ae73a9%3A0x7da5eaee290218cc!2sCellPoint!5e0!3m2!1sen!2snp!4v1705146376981!5m2!1sen!2snp"
+        width="100%"
+        height="450"
+        style={{ border: 0 }}
+        allowFullScreen=""
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade">
+      </iframe>
+
+      {/* iframe ends */}
+
+      <Footer />
+
+    </Div>
+  )
+}
+
+
+const Div = styled.div`
 font-family: ${({ theme }) => theme.fontFamily.all};
 
 // form starts----------------------------
@@ -215,4 +220,4 @@ input[type='file']{
 }
 `
 
-  export default Contact
+export default Contact
