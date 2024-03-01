@@ -1,77 +1,57 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components'
-import Footer from './components/Footer'
-
+import React, { useState, useEffect, useRef } from 'react';
+import styled from 'styled-components';
+import Footer from './components/Footer';
 
 function Products() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm]= useState("");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [products, setProducts] = useState([]);
+  const searchInputRef = useRef(null);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`http://localhost:4000/postData/fetchData?search=${searchQuery}`);
+      const data = await response.json();
+      setProducts(data.data);
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-  try {
-    setLoading(true);
-    const response = await fetch('http://localhost:4000/postData/fetchData');
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const result = await response.json();
-
-    // Check if 'data' property exists and is an array
-    if (!Array.isArray(result.data)) {
-      throw new Error('API response does not contain an array');
-    }
-
-    setData(result.data);
-    console.log(result);
-  } catch (err) {
-    setError(err);
-  } finally {
-    setLoading(false);
-  }
-};
-
-
     fetchData();
-  }, []);
+    // eslint-disable-next-line
+  }, [searchQuery]); // Fetch data whenever searchQuery changes
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      fetchData();
+    }
+  };
 
   return (
     <Div>
-      
       <div className="datas">
         <h1>Products</h1>
-        <input id="searchInput" type="text" placeholder='Search here...'
-        onChange={(event)=>{
-          setSearchTerm(event.target.value);
-          }}/>
+        <input
+          id="searchInput"
+          ref={searchInputRef}
+          type="text"
+          value={searchQuery}
+          placeholder="Search here..."
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+          }}
+          onKeyPress={handleKeyPress}
+        />
+
         <div className="data">
-          {data.length > 0 ? (
-            data
-            .filter((val) => {
-              if(searchTerm == ""){
-                return val;
-              }else if(val.title.toLowerCase().includes(searchTerm.toLowerCase())){
-                return val;
-              }
-            }) 
-            .map(item => (
+          {products.length > 0 ? (
+            products.map((item) => (
               <div key={item.id}>
                 <img src={`/images/${item.image}`} alt="data" />
                 <p>{item.name} </p>
-                <p className='ptitle'>{item.title}</p>
-                <p className='ptitle'>Rs.{item.price}</p>
+                <p className="ptitle">{item.title}</p>
+                <p className="ptitle">Rs.{item.price}</p>
               </div>
             ))
           ) : (
@@ -80,9 +60,10 @@ function Products() {
         </div>
       </div>
       <Footer />
-      </Div>
+    </Div>
   );
 }
+
 
 const Div = styled.div`
 .datas{
