@@ -8,6 +8,7 @@ import { CgShoppingCart } from "react-icons/cg";
 function Header() {
 
   const [stickyClass, setStickyClass] = useState('bottom');
+  const [toggle,setToggle]= useState(false);
 
   useEffect(() => {
     window.addEventListener('scroll', stickNavbar);
@@ -26,8 +27,12 @@ function Header() {
     alert('cart is clicked');
   }
 
-  const check2 = (a) => {
-    alert(a + ' is clicked');
+  const searchBoxToggle = () => {
+    setToggle(!toggle);
+  }
+
+  const handleSearch=()=>{
+    
   }
 
   return (
@@ -46,11 +51,15 @@ function Header() {
             <li><NavLink className="navs" to="/about"> About us </NavLink></li>
           </ul>
           <div className="icons">
+            <IoSearchSharp className="icon" onClick={searchBoxToggle} />
             <CgShoppingCart className="icon" onClick={check} />
-            <IoSearchSharp className="icon" onClick={() => check2("search")} />
           </div>
         </div>
 
+        {toggle && <SearchBox>          
+          <input placeholder='search product here'/>
+          <button onClick={handleSearch}>search</button>
+          </SearchBox>}
     </Nav>
   )
 }
@@ -176,6 +185,30 @@ p{
   }
 
 }  
+`
+const SearchBox=styled.div`
+font-family: ${({ theme }) => theme.fontFamily.all};
+text-align: center;
+position:absolute;
+z-index: 2;
+right: 20px;
+width: 200px;
+height: 100px;
+background-color: rgba(200,200,200,0.5);
+border: .1px solid white;
+
+input{
+  outline: none;
+  height: 25px;
+  margin: 10px;
+  font-style: italic;
+}
+
+Button{
+  margin: 10px;
+  height: 25px;
+  font-style: italic;
+}
 `
 
 export default Header

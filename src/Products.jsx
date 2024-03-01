@@ -7,6 +7,7 @@ function Products() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm]= useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,11 +49,24 @@ function Products() {
 
   return (
     <Div>
+      
       <div className="datas">
         <h1>Products</h1>
+        <input id="searchInput" type="text" placeholder='Search here...'
+        onChange={(event)=>{
+          setSearchTerm(event.target.value);
+          }}/>
         <div className="data">
           {data.length > 0 ? (
-            data.map(item => (
+            data
+            .filter((val) => {
+              if(searchTerm == ""){
+                return val;
+              }else if(val.title.toLowerCase().includes(searchTerm.toLowerCase())){
+                return val;
+              }
+            }) 
+            .map(item => (
               <div key={item.id}>
                 <img src={`/images/${item.image}`} alt="data" />
                 <p>{item.name} </p>
@@ -74,6 +88,14 @@ const Div = styled.div`
 .datas{
   text-align: center;
   margin-bottom: 20px;
+}
+
+#searchInput{
+  width: 500px;
+  height: 40px;
+  margin-bottom: 30px;
+  border: 2px solid black;
+  font-size: 17px;
 }
 
 .data{
