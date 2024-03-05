@@ -11,6 +11,7 @@ import Error from "./error";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { DataProvider } from './DataContext';
 import ScrollToTop from './components/ScrollToTop';
+import ProductViewPage from './ProductViewPage';
 
 function App() {
   const theme = {
@@ -35,7 +36,8 @@ function App() {
             <Route path="/products" element={<Products />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/About" element={<About />} />
-            <Route path="*" element={<Error />} />
+            <Route path="*" element={<Error />} />            
+            <Route path="/ProductViewPage/:itemId" element={<ProductViewPage />} />
           </Routes>
 
         </BrowserRouter>

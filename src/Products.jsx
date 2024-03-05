@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Footer from './components/Footer';
 
@@ -6,6 +7,7 @@ function Products() {
   const [searchQuery, setSearchQuery] = useState('');
   const [products, setProducts] = useState([]);
   const searchInputRef = useRef(null);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -20,12 +22,12 @@ function Products() {
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line
-  }, [searchQuery]); // Fetch data whenever searchQuery changes
+  }, [searchQuery]);
 
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      fetchData();
-    }
+  const handleDivClick = (itemId) => {
+    // Navigate to another component with the data item._id
+    console.log('Clicked on item with ID:', itemId);
+    navigate(`/ProductViewPage/${itemId}`);
   };
 
   return (
@@ -41,15 +43,13 @@ function Products() {
           onChange={(e) => {
             setSearchQuery(e.target.value);
           }}
-          onKeyPress={handleKeyPress}
         />
 
         <div className="data">
           {products.length > 0 ? (
             products.map((item) => (
-              <div key={item.id}>
+              <div key={item._id} onClick={() => handleDivClick(item._id)}>
                 <img src={`/images/${item.image}`} alt="data" />
-                <p>{item.name} </p>
                 <p className="ptitle">{item.title}</p>
                 <p className="ptitle">Rs.{item.price}</p>
               </div>
@@ -64,7 +64,6 @@ function Products() {
   );
 }
 
-
 const Div = styled.div`
 .datas{
   text-align: center;
@@ -77,6 +76,7 @@ const Div = styled.div`
   margin-bottom: 30px;
   border: 2px solid black;
   font-size: 17px;
+  text-align: center;
 }
 
 .data{
