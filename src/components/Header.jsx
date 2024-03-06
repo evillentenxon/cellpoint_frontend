@@ -8,7 +8,7 @@ import { CgShoppingCart } from "react-icons/cg";
 function Header() {
 
   const [stickyClass, setStickyClass] = useState('bottom');
-  const [toggle,setToggle]= useState(false);
+  const [toggle, setToggle] = useState(false);
 
   useEffect(() => {
     window.addEventListener('scroll', stickNavbar);
@@ -19,20 +19,16 @@ function Header() {
     if (window !== undefined) {
       let windowHeight = window.scrollY;
       let windowWidth = window.innerWidth;
-      (windowHeight > 100 && windowWidth>381) ? setStickyClass('sticky-nav') : setStickyClass('bottom');
+      (windowHeight > 100 && windowWidth > 381) ? setStickyClass('sticky-nav') : setStickyClass('bottom');
     }
   };
-
-  const check = () => {
-    alert('cart is clicked');
-  }
 
   const searchBoxToggle = () => {
     setToggle(!toggle);
   }
 
-  const handleSearch=()=>{
-    
+  const handleSearch = () => {
+
   }
 
   return (
@@ -41,26 +37,28 @@ function Header() {
         <h1>Cellpoint</h1>
         <p>mobile center</p>
       </div>
-        {/* <div className="bottom" > */}
-        <div className={`navbar ${stickyClass}`}>
-          <ul>
-            <li><NavLink className="navs" to="/"> Overview </NavLink></li>
-            <li><NavLink className="navs" to="/services"> Services </NavLink></li>
-            <li><NavLink className="navs" to="/products"> Products </NavLink></li>
-            <li><NavLink className="navs" to="/contact"> Contact </NavLink></li>
-            <li><NavLink className="navs" to="/about"> About us </NavLink></li>
-          </ul>
-          <div className="icons">
-            <IoSearchSharp className="icon" onClick={searchBoxToggle} />
-            <CgShoppingCart className="icon" onClick={check} />
-          </div>
+      {/* <div className="bottom" > */}
+      <div className={`navbar ${stickyClass}`}>
+        <ul>
+          <li><NavLink className="navs" to="/"> Overview </NavLink></li>
+          <li><NavLink className="navs" to="/services"> Services </NavLink></li>
+          <li><NavLink className="navs" to="/products"> Products </NavLink></li>
+          <li><NavLink className="navs" to="/contact"> Contact </NavLink></li>
+          <li><NavLink className="navs" to="/about"> About us </NavLink></li>
+        </ul>
+        <div className="icons">
+          <IoSearchSharp className="icon" onClick={searchBoxToggle} />
+          <NavLink to="/cart"><CgShoppingCart className="icon"/></NavLink>
         </div>
+    </div>
 
-        {toggle && <SearchBox>          
-          <input placeholder='search product here'/>
-          <button onClick={handleSearch}>search</button>
-          </SearchBox>}
-    </Nav>
+      {
+    toggle && <SearchBox>
+      <input placeholder='search product here' />
+      <button onClick={handleSearch}>search</button>
+    </SearchBox>
+  }
+    </Nav >
   )
 }
 
@@ -125,7 +123,7 @@ p{
 
 .icon{
   padding: 0 1em;
-  font-size: 20px;
+  font-size: 25px;
 
   &:hover{  
     cursor: pointer;
@@ -186,7 +184,7 @@ p{
 
 }  
 `
-const SearchBox=styled.div`
+const SearchBox = styled.div`
 font-family: ${({ theme }) => theme.fontFamily.all};
 text-align: center;
 position:absolute;

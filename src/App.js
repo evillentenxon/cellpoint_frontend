@@ -12,6 +12,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { DataProvider } from './DataContext';
 import ScrollToTop from './components/ScrollToTop';
 import ProductViewPage from './ProductViewPage';
+import Cart from './components/Cart';
 
 function App() {
   const theme = {
@@ -38,6 +39,7 @@ function App() {
             <Route path="/About" element={<About />} />
             <Route path="*" element={<Error />} />            
             <Route path="/ProductViewPage/:itemId" element={<ProductViewPage />} />
+            <Route path="/cart" element={<Cart/>} />
           </Routes>
 
         </BrowserRouter>

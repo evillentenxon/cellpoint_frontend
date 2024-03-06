@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Footer from './components/Footer';
 
 function ProductViewPage() {
   const { itemId } = useParams();
+  const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
+  const itemCategory = queryParams.get('category');
+
   const [productInfo, setProductInfo] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+
 
   useEffect(() => {
+    console.log('useEffect is running');
     const fetchProductDetails = async () => {
       try {
         const response = await fetch(`http://localhost:4000/postData/productViewPage/${itemId}`);
@@ -23,9 +30,28 @@ function ProductViewPage() {
       }
     };
 
-    fetchProductDetails();
-  }, [itemId]);
+    const fetchRelatedProducts = async () => {
+      try {
+        const response = await fetch(`http://localhost:4000/postData/categories/${itemCategory}`);
+        const data = await response.json();
 
+        if (response.ok) {
+          setRelatedProducts(data.data);
+        } else {
+          console.error('Error fetching related products:', data.error);
+        }
+      } catch (error) {
+        console.error('Error fetching related products:', error);
+      }
+    };
+
+    fetchProductDetails();
+    fetchRelatedProducts(); // Call the function to fetch related products
+
+  }, [itemId, itemCategory]);
+
+
+  console.log(itemCategory);
   return (
     <Div>
       {productInfo ? (
@@ -47,10 +73,25 @@ function ProductViewPage() {
         <p>Loading product details...</p>
       )}
 
+      {/* Display related products */}
+      <div className="data">
+        {relatedProducts.length > 0 ? (
+          relatedProducts.map((item) => (
+            <div key={relatedProducts._id}>
+              <img src={`/images/${item.image}`} alt="data" />
+              <p className="ptitle">{item.title}</p>
+              <p className="ptitle">Rs.{item.price}</p>
+            </div>
+          ))
+        ) : (
+          <p>No other products of {relatedProducts.category} category</p>
+        )}
+      </div>
+
       <Footer />
     </Div>
   );
-}
+};
 
 export default ProductViewPage;
 
@@ -93,5 +134,37 @@ margin-right: 10px;
   background-color: #000;
   color: #fff;
   margin-left: 10px;
+}
+
+.data{
+  text-align: center;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  grid-row-gap: 2em;
+  place-items: center;
+  align-items: stretch;
+  margin-bottom: 100px;
+  p{
+    margin: 0;
+  }
+  .ptitle{
+    margin-bottom: 10px;
+  }
+
+  img{
+    width: 100px;
+  }
+  div{
+    border: 2px solid #aaa;
+    border-radius: 1em;
+    width:150px;
+    transition: transform 0.5s;
+
+    &:hover{
+      border-color: #a33;
+      cursor: pointer;
+      transform: translateY(-2px);
+    }
+  }
 }
 `

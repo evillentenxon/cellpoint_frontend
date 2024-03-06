@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Footer from './components/Footer';
@@ -24,11 +24,16 @@ function Products() {
     // eslint-disable-next-line
   }, [searchQuery]);
 
-  const handleDivClick = (itemId) => {
-    // Navigate to another component with the data item._id
-    console.log('Clicked on item with ID:', itemId);
-    navigate(`/ProductViewPage/${itemId}`);
+  const handleDivClick = (itemId, itemCategory) => {
+    // Concatenate ID and category in the URL
+    const url = `/ProductViewPage/${itemId}?category=${itemCategory}`;
+    
+    // Navigate to another component with the concatenated URL
+    // console.log('Clicked on item with ID:', itemId);
+    // console.log('Clicked on item with category:', itemCategory);
+    navigate(url);
   };
+  
 
   return (
     <Div>
@@ -48,7 +53,7 @@ function Products() {
         <div className="data">
           {products.length > 0 ? (
             products.map((item) => (
-              <div key={item._id} onClick={() => handleDivClick(item._id)}>
+              <div key={item._id} onClick={() => handleDivClick(item._id,item.category)}>
                 <img src={`/images/${item.image}`} alt="data" />
                 <p className="ptitle">{item.title}</p>
                 <p className="ptitle">Rs.{item.price}</p>
@@ -63,6 +68,9 @@ function Products() {
     </Div>
   );
 }
+export default Products;
+
+
 
 const Div = styled.div`
 .datas{
@@ -125,4 +133,3 @@ const Div = styled.div`
   }
 }
 `
-export default Products;
