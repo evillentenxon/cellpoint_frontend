@@ -3,12 +3,14 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { IoSearchSharp } from "react-icons/io5";
 import { CgShoppingCart } from "react-icons/cg";
+import {useData} from '../DataContext';
 
 
 function Header() {
 
   const [stickyClass, setStickyClass] = useState('bottom');
   const [toggle, setToggle] = useState(false);
+  const {cartCount}= useData();
 
   useEffect(() => {
     window.addEventListener('scroll', stickNavbar);
@@ -48,16 +50,19 @@ function Header() {
         </ul>
         <div className="icons">
           <IoSearchSharp className="icon" onClick={searchBoxToggle} />
-          <NavLink to="/cart"><CgShoppingCart className="icon"/></NavLink>
+          <NavLink to="/cart">
+            <CgShoppingCart className="icon" />
+            <span id="cart-count">{cartCount}</span>
+          </NavLink>          
         </div>
-    </div>
+      </div>
 
       {
-    toggle && <SearchBox>
-      <input placeholder='search product here' />
-      <button onClick={handleSearch}>search</button>
-    </SearchBox>
-  }
+        toggle && <SearchBox>
+          <input placeholder='search product here' />
+          <button onClick={handleSearch}>search</button>
+        </SearchBox>
+      }
     </Nav >
   )
 }
@@ -139,6 +144,17 @@ p{
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  #cart-count {
+    background-color: #00f;
+    color: #fff;
+    border-radius: 50%;
+    padding: 3px 5px;
+    font-size: 10px;
+    position: absolute;
+    top: 7px;
+    right: 20px;
+}
 }
 
 .sticky-nav ul{
@@ -162,6 +178,17 @@ p{
 
 .sticky-nav .icon{
   color: #fff;
+}
+
+#cart-count {
+  background-color: #00f;
+  color: #fff;
+  border-radius: 50%;
+  padding: 3px 5px;
+  font-size: 10px;
+  position: absolute;
+  top: 100px;
+  right: 20px;
 }
 
 // media query---------------------------------------

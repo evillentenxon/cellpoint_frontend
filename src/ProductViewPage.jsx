@@ -2,12 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Footer from './components/Footer';
+import { useData } from './DataContext';
+import { useNavigate } from 'react-router-dom';
 
 function ProductViewPage() {
   const { itemId } = useParams();
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
   const itemCategory = queryParams.get('category');
+  const {addToCart}= useData();
+  const navigate = useNavigate();
+
+  const handleAddToCart= (productDetails)=>{
+    // const productDetails= {
+    //   title: "Product 1",
+    //   price: 20,
+    //   category: 'earphone'
+    // }
+    
+    addToCart(productDetails);
+  }
 
   const [productInfo, setProductInfo] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -50,6 +64,15 @@ function ProductViewPage() {
 
   }, [itemId, itemCategory]);
 
+  const handleDivClick = (itemId, itemCategory) => {
+    // Concatenate ID and category in the URL
+    const url = `/ProductViewPage/${itemId}?category=${itemCategory}`;
+    
+    // Navigate to another component with the concatenated URL
+    // console.log('Clicked on item with ID:', itemId);
+    // console.log('Clicked on item with category:', itemCategory);
+    navigate(url);
+  };
 
   console.log(itemCategory);
   return (
@@ -66,7 +89,7 @@ function ProductViewPage() {
             <p>Rs.{productInfo.price}</p>
             <p>Brand: {productInfo.brand}</p>
             <button id="order">Order Now</button>
-            <button id="cart">Add to cart</button>
+            <button id="cart" onClick={()=>handleAddToCart(productInfo)}>Add to cart</button>
           </div>
         </div>
       ) : (
@@ -77,8 +100,8 @@ function ProductViewPage() {
       <div className="data">
         {relatedProducts.length > 0 ? (
           relatedProducts.map((item) => (
-            <div key={relatedProducts._id}>
-              <img src={`/images/${item.image}`} alt="data" />
+            <div key={relatedProducts._id} onClick={() => handleDivClick(item._id,item.category)}>
+              <img src={`/images/${item.image}`} alt="data"/>
               <p className="ptitle">{item.title}</p>
               <p className="ptitle">Rs.{item.price}</p>
             </div>
