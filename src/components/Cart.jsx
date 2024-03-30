@@ -17,7 +17,7 @@ function Cart() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': '831c7083d7f44fe280b3c15cce1dd053'
+          'Authorization': process.env.TEST_SECRECT_KEY
         },
         body: JSON.stringify({
           "return_url": "http://localhost:3000/success",
