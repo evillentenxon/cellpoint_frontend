@@ -13,6 +13,7 @@ import { DataProvider } from './DataContext';
 import ScrollToTop from './components/ScrollToTop';
 import ProductViewPage from './ProductViewPage';
 import Cart from './components/Cart';
+import Success from './components/Success'
 
 function App() {
   const theme = {
@@ -40,6 +41,7 @@ function App() {
             <Route path="*" element={<Error />} />            
             <Route path="/ProductViewPage/:itemId" element={<ProductViewPage />} />
             <Route path="/cart" element={<Cart/>} />
+            <Route path="/success" element={<Success/>} />
           </Routes>
 
         </BrowserRouter>

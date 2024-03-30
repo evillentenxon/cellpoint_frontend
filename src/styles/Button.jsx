@@ -27,4 +27,13 @@ export const Button = styled.button`
     font-size: 1.8rem;
   }
 `;
-  
+
+export const KhaltiButton = styled.button`
+  color: #fff;
+  background-color: #5c2e91;
+  border-width: 0 0 0 10px;
+  border-color: yellow;
+  font-size: 18px;
+  padding: 10px;
+  margin: 20px;
+`;
